@@ -1,13 +1,18 @@
 #define Table_H
 #include "Column.h"
+#include <string>
+#include <iostream>
+#include <vector>
+using namespace std;
 
 class Table {
 
-
 public:
 
+	Table();
+	Table(char*, Column*, int);
 	~Table();
-	Column* setColumns( Column*);
+	void setColumns(Column*, int);
 	Column* getColumns();
 	Column getColumns(int);
 	int getNbOfColumns();
@@ -24,7 +29,7 @@ public:
 	Table operator+(int);
 	Table operator++();
 	Table operator++(int);
-	int& operator[](int);
+	Column& operator[](int);
 	Table& operator = (const Table&);
 	explicit operator int();
 	int operator()();
@@ -34,8 +39,6 @@ public:
 	bool operator< (Table&);
 	bool less(Table&);
 
-	Table();
-	Table(char*, Column*, int);
 
 private:
 	//vector<Table> tables;
