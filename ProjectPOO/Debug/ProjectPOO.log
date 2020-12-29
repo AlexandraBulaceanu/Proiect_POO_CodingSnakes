@@ -1,0 +1,32 @@
+﻿  Column.cpp
+  Database.cpp
+C:\Users\mihai\Desktop\ProjectPOO\Database.cpp(126,20): warning C4018: '<': signed/unsigned mismatch
+  DeleteTable.cpp
+  InsertTable.cpp
+C:\Users\mihai\Desktop\ProjectPOO\InsertTable.cpp(15,18): warning C4018: '<': signed/unsigned mismatch
+C:\Users\mihai\Desktop\ProjectPOO\InsertTable.cpp(38,23): warning C4018: '<': signed/unsigned mismatch
+  Parser.cpp
+C:\Users\mihai\Desktop\ProjectPOO\Parser.cpp(11,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\mihai\Desktop\ProjectPOO\Parser.cpp(19,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\mihai\Desktop\ProjectPOO\Parser.cpp(23,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\mihai\Desktop\ProjectPOO\Parser.cpp(36,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\mihai\Desktop\ProjectPOO\Parser.cpp(39,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\mihai\Desktop\ProjectPOO\Parser.cpp(50,23): warning C4018: '<': signed/unsigned mismatch
+  SelectTable.cpp
+C:\Users\mihai\Desktop\ProjectPOO\SelectTable.cpp(71,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\mihai\Desktop\ProjectPOO\SelectTable.cpp(74,23): warning C4018: '<': signed/unsigned mismatch
+  Source.cpp
+  Table.cpp
+  UpdateTable.cpp
+  Generating Code...
+C:\Users\mihai\Desktop\ProjectPOO\Table.cpp(157): warning C4715: 'Table::operator()': not all control paths return a value
+C:\Users\mihai\Desktop\ProjectPOO\Table.cpp(237): warning C4715: 'Table::getColumns': not all control paths return a value
+C:\Users\mihai\Desktop\ProjectPOO\Database.cpp(308): warning C4715: 'Database::operator()': not all control paths return a value
+C:\Users\mihai\Desktop\ProjectPOO\Database.cpp(380): warning C4715: 'Database::gettables': not all control paths return a value
+C:\Users\mihai\Desktop\ProjectPOO\Column.cpp(237): warning C4715: 'Column::operator[]': not all control paths return a value
+C:\Users\mihai\Desktop\ProjectPOO\Column.cpp(246): warning C4715: 'Column::operator[]': not all control paths return a value
+C:\Users\mihai\Desktop\ProjectPOO\Column.cpp(272): warning C4715: 'Column::operator()': not all control paths return a value
+C:\Users\mihai\Desktop\ProjectPOO\Column.cpp(451): warning C4715: 'Column::getFloatValue': not all control paths return a value
+C:\Users\mihai\Desktop\ProjectPOO\Column.cpp(459): warning C4715: 'Column::getStringValue': not all control paths return a value
+C:\Users\mihai\Desktop\ProjectPOO\Column.cpp(443): warning C4715: 'Column::getIntValue': not all control paths return a value
+  ProjectPOO.vcxproj -> C:\Users\mihai\Desktop\ProjectPOO\Debug\ProjectPOO.exe
