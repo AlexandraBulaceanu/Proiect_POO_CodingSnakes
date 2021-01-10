@@ -2,6 +2,7 @@
 #include "Database.h"
 #include "Parser.h"
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -154,6 +155,15 @@ string Database::validateDisplay(string& str)
 	return "Invalid Command!";
 }
 
+void Database::createFileForTable() {
+
+	std::ofstream outfile("test.txt");
+
+	outfile << "inceput faza 2!" << std::endl;
+
+	outfile.close();
+	
+}
 
 
 Database::Database()

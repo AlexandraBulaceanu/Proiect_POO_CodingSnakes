@@ -32,6 +32,7 @@ int main() {
         {
             input = Parser::removeFirstWord(input);
             cout << database->validateCreate(input);
+            //TODO: apelez aici daca e ok functia de creare fisier asociat tabelei
         }
     }
     else if (Parser::getFirstWord(input) == "DISPLAY")

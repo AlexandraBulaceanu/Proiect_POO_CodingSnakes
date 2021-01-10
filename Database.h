@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include "Table.h"
+#include <fstream>
+
 using namespace std;
 
 class Database {
@@ -40,6 +42,7 @@ public:
 	bool less(Database&);
 	bool operator< (Database&);
 	bool operator==(Database&);
+	void createFileForTable();
 
 private:
 	static Database* instance;
