@@ -2,6 +2,11 @@
 #include <vector>
 #include "SelectTable.h"
 #include "Parser.h"
+#include "Database.h"
+#include "Table.h"
+#include "Column.h"
+
+Database* db1 = Database::getInstance();
 
 string SelectTable::validateSelect(string& str)
 {
@@ -66,6 +71,27 @@ string SelectTable::validateSelect(string& str)
         else
             return "Invalid Command!";
     }
+
+    Table* tablesInDB = db1->gettables();
+    int nbTables = db1->getnbOfTables();
+    bool exists = 0, ok = 1;
+    for (int i = 0;i < nbTables;i++) {
+        if (strcmp(tablesInDB[i].getTableName(), commandTableName.c_str()) == 0) {
+            exists = 1;
+            Column* columns = tablesInDB[i].getColumns();
+            int nbCol = tablesInDB[i].getNbOfColumns();
+          
+            for (int j = 0;j < tablesInDB[i].getNbOfColumns();j++) {
+                //TODO: validate column name really exists in the table
+                
+            }
+        }
+    }
+    if (exists == 0) { return "Invalid Command! The table does not exist!"; }
+    if (ok == 0) { return "Invalid Command! The types do not match!"; }
+
+    select();
+
     string ans;
 
     for (int i = 0; i < selectArguments.size(); i++)
@@ -75,3 +101,82 @@ string SelectTable::validateSelect(string& str)
         ans += whereArguments[i], ans += " ";
     return ans;
 }
+
+bool SelectTable::foundInSelect(string attr) {
+    for (int i = 0;i < selectArguments.size();i++) {
+        if (strcmp(attr.c_str(), selectArguments[i].c_str()) == 0) {return true;}
+    }
+    return false;
+}
+
+int SelectTable::getWhereIndex(int i) {
+    Table* tablesInDB = db1->gettables();
+    Column* columns = tablesInDB[i].getColumns();
+    for (int j = 0;j < tablesInDB[i].getNbOfColumns();j++) {
+        if (strcmp(columns[j].getNameAttr(), whereArguments[0].c_str()) == 0) return j;
+    }
+    return -1; //nu l-am gasit
+}
+
+void SelectTable::select() {
+    Table* tablesInDB = db1->gettables();
+    int nbTables = db1->getnbOfTables();
+    for (int i = 0;i < nbTables;i++) {
+        if (strcmp(tablesInDB[i].getTableName(), commandTableName.c_str()) == 0) {
+            if (selectArguments.size() == 1 && strcmp(selectArguments[0].c_str(), "ALL") == 0) {
+                if (whereArguments.size() == 0) {
+                    db1->show(commandTableName);
+                }
+            }
+                else {
+                            cout << "Table " + commandTableName + " ";
+                            Column* columns = tablesInDB[i].getColumns();
+                            int nbOfRows;
+                            if (columns[0].getType() == 1) nbOfRows = columns[0].getNbOfInt();
+                            else if (columns[0].getType() == 2) nbOfRows = columns[0].getNbOfString();
+                            else nbOfRows = columns[0].getNbOfFloat();
+                            for (int h = 0;h < nbOfRows;h++) {
+                                for (int j = 0;j < tablesInDB[i].getNbOfColumns();j++) {
+                                    if (foundInSelect(columns[j].getNameAttr()) || strcmp(selectArguments[0].c_str(), "ALL") == 0) {
+                                        if (whereArguments.size() > 0)
+                                        {
+                                            int index = getWhereIndex(i);
+                                            if (index != -1) {
+                                                bool whereOk = 0;
+                                                if (columns[j].getType() == 1)
+                                                    if (to_string(columns[index].getIntValue(h)) == whereArguments[1]) whereOk = 1;
+                                                    else if (columns[index].getType() == 2)
+                                                        if (columns[index].getStringValue(h) == whereArguments[1]) whereOk = 1;
+                                                        else if (to_string(columns[index].getFloatValue(h)) == whereArguments[1]) whereOk = 1;
+                                                if (whereOk) {
+                                                    if (columns[j].getType() == 1)
+                                                        cout << columns[j].getNameAttr() << "  " + to_string(columns[j].getIntValue(h)) + "  ";
+                                                    else if (columns[j].getType() == 2)
+                                                        cout << columns[j].getNameAttr() << "  " + columns[j].getStringValue(h) + "  ";
+                                                    else cout << columns[j].getNameAttr() << "  " + to_string(columns[j].getFloatValue(h)) + "  ";
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            if (columns[j].getType() == 1)
+                                                cout << columns[j].getNameAttr() << "  " + to_string(columns[j].getIntValue(h)) + "  ";
+                                            else if (columns[j].getType() == 2)
+                                                cout << columns[j].getNameAttr() << "  " + columns[j].getStringValue(h) + "  ";
+                                            else cout << columns[j].getNameAttr() << "  " + to_string(columns[j].getFloatValue(h)) + "  ";
+                                        }
+
+
+
+                                    }
+
+                                }
+                                }
+                                cout << "\n";
+                            }
+
+                        }
+                    }
+}
+            
+           
+    

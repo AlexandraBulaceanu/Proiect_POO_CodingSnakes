@@ -193,15 +193,21 @@ void Database::createTable() {
 		Column coloana;
 		coloana.setNameAttr(commandParams[k].c_str());
 		if (strcmp(commandParams[k + 1].c_str(),"integer") == 0) {
-			ints++;
-			coloana.setNbOfInt(ints);
+			//ints++;
+			//coloana.setNbOfInt(ints);
+			coloana.setType(1);
+			//cout << coloana.getType() << " ";
 		}else if (strcmp(commandParams[k + 1].c_str(),"float") == 0) {
-			floats++;
-			coloana.setNbOfInt(floats);
+			//floats++;
+			//coloana.setNbOfInt(floats);
+			coloana.setType(3);
+			//cout << coloana.getType() << " ";
 		}
 		else if (strcmp(commandParams[k + 1].c_str(),"text") == 0) {
-			strings++;
-			coloana.setNbOfInt(strings);
+			//strings++;
+			//coloana.setNbOfInt(strings);
+			coloana.setType(2);
+			//cout << coloana.getType() << " ";
 		}
 		k += 4;
 		columns.push_back(coloana);
@@ -224,7 +230,7 @@ string Database::validateDisplay(string& str)
 		str = Parser::removeFirstWord(str);
 		if ((Parser::getFirstWord(str)).size() == 0)
 		{
-			show();
+			show(commandTableName);
 			return commandTableName;
 		}
 		
@@ -232,8 +238,28 @@ string Database::validateDisplay(string& str)
 	}
 	return "Invalid Command!";
 }
-void Database::show() {
-	
+void Database::show(string commandTableName) {
+	for (int i = 0;i < nbOfTables;i++) {
+		if (strcmp(tables[i].getTableName(), commandTableName.c_str()) == 0) {
+			cout << "Table " + commandTableName + " ";
+			Column* columns = tables[i].getColumns();
+			int nbOfRows;
+			if (columns[0].getType() == 1) nbOfRows = columns[0].getNbOfInt();
+			else if (columns[0].getType() == 2) nbOfRows = columns[0].getNbOfString();
+			else nbOfRows = columns[0].getNbOfFloat();
+			for (int h = 0;h < nbOfRows;h++) {
+				for (int j = 0;j < tables[i].getNbOfColumns();i++) {
+					if (columns[j].getType() == 1)
+						cout << columns[j].getNameAttr() << "  " + to_string(columns[j].getIntValue(h)) + "  ";
+					else if (columns[j].getType() == 2)
+						cout << columns[j].getNameAttr() << "  " + columns[j].getStringValue(h) + "  ";
+					else cout << columns[j].getNameAttr() << "  " + to_string(columns[j].getFloatValue(h)) + "  ";
+				}
+				cout << "\n";
+			}
+
+		}
+	}
 }
 
 void Database::createFileForTable() {

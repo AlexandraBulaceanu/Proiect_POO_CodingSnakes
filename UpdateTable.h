@@ -1,3 +1,4 @@
+#pragma once
 #define UpdateTable_H
 #include <string>
 #include <vector>
@@ -9,5 +10,6 @@ private:
     vector<string> commandArguments;
 public:
     string validateUpdate(string& str);
-
+    void update();
+    bool foundInUpdate(string);
 };

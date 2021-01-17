@@ -1,3 +1,4 @@
+#pragma once
 #define DeleteTable_H
 #include <string>
 #include <vector>
@@ -9,5 +10,6 @@ private:
     vector<string> commandArguments;
 public:
     string validateDelete(string& str);
-
+    void del();
+    bool foundInDel(string);
 };

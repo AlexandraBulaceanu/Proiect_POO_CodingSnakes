@@ -45,7 +45,7 @@ public:
 	bool operator==(Database&);
 	void createFileForTable();
 	void addTable(Table&);
-	void show();
+	void show(string);
 	void deleteTable();
 
 private:

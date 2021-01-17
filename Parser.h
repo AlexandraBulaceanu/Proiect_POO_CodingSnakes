@@ -1,3 +1,4 @@
+#pragma once
 #define Parser_H
 #include <string>
 #include <vector>

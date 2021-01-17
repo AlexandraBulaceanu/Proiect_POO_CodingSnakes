@@ -1,3 +1,4 @@
+#pragma once
 #define InsertTable_H
 #include <string>
 #include <vector>
@@ -9,4 +10,5 @@ private:
     vector<string> commandArguments;
 public:
     string validateInsert(string& str);
+    void insertIntoTable();
 };

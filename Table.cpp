@@ -171,12 +171,12 @@ void Table::setNbOfColumns(int nbOfColumns)
 
 Column* Table::getColumns()
 {
-	if (columns != nullptr)
+	/*if (this->columns != nullptr)
 	{
-		Column* copy = new Column[nbOfColumns];
-		for (int i = 0; i < nbOfColumns; i++)
+		Column* copy = new Column[this->nbOfColumns];
+		for (int i = 0; i < this->nbOfColumns; i++)
 		{
-			copy[i] = columns[i];
+			copy[i] = this->columns[i];
 
 		}
 		return copy;
@@ -184,7 +184,8 @@ Column* Table::getColumns()
 	else
 	{
 		return nullptr;
-	}
+	}*/
+	return columns;
 }
 
 void Table::setColumns(vector<Column>& columns)
