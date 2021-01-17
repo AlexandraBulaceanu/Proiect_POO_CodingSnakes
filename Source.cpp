@@ -16,60 +16,62 @@ int main() {
     UpdateTable* updateTable = new UpdateTable;
     SelectTable* selectTable = new SelectTable;
 
-    string input;
-    getline(cin, input);
+    while (1) {
+        string input;
+        getline(cin, input);
 
 
-    if (Parser::getFirstWord(input) == "DROP")
-    {
-        input = Parser::removeFirstWord(input);
-        cout << database->validateDrop(input);
-    }
-    else if (Parser::getFirstWord(input) == "CREATE")
-    {
-        input = Parser::removeFirstWord(input);
-        if (Parser::getFirstWord(input) == "TABLE")
+        if (Parser::getFirstWord(input) == "DROP")
         {
             input = Parser::removeFirstWord(input);
-            cout << database->validateCreate(input);
-            //TODO: apelez aici daca e ok functia de creare fisier asociat tabelei
+            cout << database->validateDrop(input);
         }
-    }
-    else if (Parser::getFirstWord(input) == "DISPLAY")
-    {
-        input = Parser::removeFirstWord(input);
-        cout << database->validateDisplay(input);
-    }
-    else if (Parser::getFirstWord(input) == "INSERT")
-    {
-        input = Parser::removeFirstWord(input);
-        if (Parser::getFirstWord(input) == "INTO")
+        else if (Parser::getFirstWord(input) == "CREATE")
         {
             input = Parser::removeFirstWord(input);
-            cout << insertTable->validateInsert(input);
+            if (Parser::getFirstWord(input) == "TABLE")
+            {
+                input = Parser::removeFirstWord(input);
+                cout << database->validateCreate(input);
+                //TODO: apelez aici daca e ok functia de creare fisier asociat tabelei
+            }
         }
-    }
-    else if (Parser::getFirstWord(input) == "DELETE")
-    {
-        input = Parser::removeFirstWord(input);
-        if (Parser::getFirstWord(input) == "FROM")
+        else if (Parser::getFirstWord(input) == "DISPLAY")
         {
             input = Parser::removeFirstWord(input);
-            cout << deleteTable->validateDelete(input);
+            cout << database->validateDisplay(input);
         }
+        else if (Parser::getFirstWord(input) == "INSERT")
+        {
+            input = Parser::removeFirstWord(input);
+            if (Parser::getFirstWord(input) == "INTO")
+            {
+                input = Parser::removeFirstWord(input);
+                cout << insertTable->validateInsert(input);
+            }
+        }
+        else if (Parser::getFirstWord(input) == "DELETE")
+        {
+            input = Parser::removeFirstWord(input);
+            if (Parser::getFirstWord(input) == "FROM")
+            {
+                input = Parser::removeFirstWord(input);
+                cout << deleteTable->validateDelete(input);
+            }
+        }
+        else if (Parser::getFirstWord(input) == "UPDATE")
+        {
+            input = Parser::removeFirstWord(input);
+            cout << updateTable->validateUpdate(input);
+        }
+        else if (Parser::getFirstWord(input) == "SELECT")
+        {
+            input = Parser::removeFirstWord(input);
+            cout << selectTable->validateSelect(input);
+        }
+        //string words[200] = { nullptr };
+        else if (Parser::getFirstWord(input) == "EXIT") { cout << "Se inchide aplicatia"; break; }
     }
-    else if (Parser::getFirstWord(input) == "UPDATE")
-    {
-        input = Parser::removeFirstWord(input);
-        cout << updateTable->validateUpdate(input);
-    }
-    else if (Parser::getFirstWord(input) == "SELECT")
-    {
-        input = Parser::removeFirstWord(input);
-        cout << selectTable->validateSelect(input);
-    }
-    //string words[200] = { nullptr };
-
 
     delete selectTable;
     delete insertTable;

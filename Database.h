@@ -15,6 +15,7 @@ public:
 	string validateCreate(string& str);
 	string validateDrop(string& str);
 	string validateDisplay(string& str);
+	void createTable();
 
 	~Database();
 	//void adaugaTable(Table*);
@@ -34,7 +35,7 @@ public:
 	int getnbOfTables();
 	void setnbOfTables(int);
 	Table* gettables();
-	void settables(Table*, int);
+	void settables(vector<Table>&);
 	void setname(const char*);
 	char* getname();
 	Table gettables(int);
@@ -43,6 +44,9 @@ public:
 	bool operator< (Database&);
 	bool operator==(Database&);
 	void createFileForTable();
+	void addTable(Table&);
+	void show();
+	void deleteTable();
 
 private:
 	static Database* instance;

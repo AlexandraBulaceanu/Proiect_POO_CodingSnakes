@@ -1,10 +1,14 @@
 #include <iostream>
 #include "Database.h"
 #include "Parser.h"
+#include "Table.h"
+#include "Column.h"
 #include <string>
 #include <fstream>
 
 using namespace std;
+
+int ok = 1;
 
 Database* Database::instance = nullptr;
 
@@ -25,10 +29,31 @@ string Database::validateDrop(string& str)
 		commandTableName = Parser::getFirstWord(str);
 		str = Parser::removeFirstWord(str);
 		if ((Parser::getFirstWord(str)).size() == 0)
+		{
 			return commandTableName;
+			deleteTable();
+		}
 
 	}
 	return "Invalid Command!";
+}
+
+void Database::deleteTable() {
+	int i;
+	for ( i = 0; i < nbOfTables; i++)
+		if (strcmp(tables[i].getTableName(),commandTableName.c_str())==0)
+			break;
+
+	// If x found in array 
+	if (i < nbOfTables)
+	{
+		// reduce size of array and move all 
+		// elements on space ahead 
+		nbOfTables--;
+		for (int j = i; j < nbOfTables; j++)
+			tables[j] = tables[j + 1];
+		cout << "Tabela " + commandTableName + " a fost stearsa cu succes!";
+	} else { cout << "Tabela " + commandTableName + " nu exista in baza de date!"; }
 }
 
 string Database::validateCreate(string& str)
@@ -54,7 +79,7 @@ string Database::validateCreate(string& str)
 			return "Invalid command!";
 
 		commandParams.push_back(str.substr(0, pos)); ///punem denumirea in tabel
-		str = str.substr(pos + 1, str.size()); ///scamap de denumire si de prima virgula
+		str = str.substr(pos + 1, str.size()); ///scapam de denumire si de prima virgula
 
 		pos = str.find(",");
 		if (pos == std::string::npos)
@@ -135,10 +160,59 @@ string Database::validateCreate(string& str)
 		ans += commandParams[i + 3];
 		ans += "\n";
 	}
-	return ans;
+
+	this->createTable();
+	ans += "Introduceti noua comanda: ";
+	ans += "\n";
+	commandParams.clear();
+	if (ok == 1) return ans;
+	else return " ";
 }
 
+void Database::createTable() {
+	vector<Column> columns;
+	
+	for (int i = 0;i < nbOfTables; i++) {
+		
+		char* name = tables[i].getTableName();
 
+		if (strcmp(name, commandTableName.c_str())==0)
+		{
+			cout << "Operatia nu se poate efectua! Exista deja un tabel cu denumirea " + commandTableName;
+			ok = 0;
+			return;
+		}
+	}
+	Table table;
+	table.setTableName(commandTableName.c_str());
+	int nbCol = commandParams.size() / 4;
+	table.setNbOfColumns(nbCol);
+	int k = 0;
+	int ints = 0, floats = 0, strings = 0;
+	for (int i = 0;i < nbCol;i++) {
+		Column coloana;
+		coloana.setNameAttr(commandParams[k].c_str());
+		if (strcmp(commandParams[k + 1].c_str(),"integer") == 0) {
+			ints++;
+			coloana.setNbOfInt(ints);
+		}else if (strcmp(commandParams[k + 1].c_str(),"float") == 0) {
+			floats++;
+			coloana.setNbOfInt(floats);
+		}
+		else if (strcmp(commandParams[k + 1].c_str(),"text") == 0) {
+			strings++;
+			coloana.setNbOfInt(strings);
+		}
+		k += 4;
+		columns.push_back(coloana);
+	}
+	table.setColumns(columns);
+	this->nbOfTables++;
+	vector<Table> aux; aux.push_back(table);
+	if (nbOfTables == 1) this->settables(aux);
+	else this->addTable(table);
+	cout << "Tabela " + commandTableName + " s-a creat cu succes! Aceasta are "+to_string(nbCol)+" coloane:"+"\n";
+}
 
 string Database::validateDisplay(string& str)
 {
@@ -149,10 +223,17 @@ string Database::validateDisplay(string& str)
 		commandTableName = Parser::getFirstWord(str);
 		str = Parser::removeFirstWord(str);
 		if ((Parser::getFirstWord(str)).size() == 0)
+		{
+			show();
 			return commandTableName;
+		}
+		
 
 	}
 	return "Invalid Command!";
+}
+void Database::show() {
+	
 }
 
 void Database::createFileForTable() {
@@ -164,6 +245,8 @@ void Database::createFileForTable() {
 	outfile.close();
 	
 }
+
+
 
 
 Database::Database()
@@ -261,6 +344,10 @@ Database::~Database()
 	}
 }
 
+void Database::addTable(Table& table) {
+	this->tables[nbOfTables] = table;
+}
+
 bool Database::operator!()
 {
 	return nbOfTables > 0;
@@ -349,18 +436,18 @@ Table* Database::gettables()
 }
 
 
-void Database::settables(Table* tables, int nbOfTables)
+void Database::settables(vector<Table>& tables)
 {
-	if (tables != nullptr && nbOfTables != 0)
+	if (tables.size() != 0)
 	{
-		this->nbOfTables = nbOfTables;
+		this->nbOfTables = tables.size();
 		if (this->tables != nullptr)
 		{
 			delete[] this->tables;
 
 		}
-		this->tables = new Table[nbOfTables];
-		for (int i = 0; i < nbOfTables; i++)
+		this->tables = new Table[100];
+		for (int i = 0; i < this->nbOfTables; i++)
 		{
 			this->tables[i] = tables[i];
 		}
